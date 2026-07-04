@@ -106,12 +106,15 @@ app.post('/api/auth/forgot-password', async (req, res) => {
       },
     });
 
-    return res.json({ message: 'Permintaan forgot password sudah direkam ke database.' });
+    return res.json({
+      message: 'Permintaan forgot password sudah direkam ke database.',
+    });
   } catch (_error) {
-    return res.status(500).json({ message: 'Gagal memproses forgot password.' });
+    return res.status(500).json({
+      message: 'Gagal memproses forgot password.',
+    });
   }
 });
-
 app.post('/api/auth/reset-password', async (req, res) => {
   const { email, newPassword, confirmPassword } = req.body;
 
@@ -171,11 +174,14 @@ app.get('/api/weather', async (req, res) => {
     );
 
     res.json(response.data);
-  } catch (error) {
-    res.status(500).json({
-      message: 'Gagal mengambil data cuaca.',
-    });
-  }
+ } catch (error) {
+  console.error("OpenWeather Error:");
+  console.error(error.response?.data || error.message);
+
+  return res.status(500).json({
+    message: 'Gagal mengambil data cuaca.',
+  });
+}
 }); 
 
 app.listen(port, () => {
